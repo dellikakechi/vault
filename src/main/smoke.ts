@@ -725,6 +725,15 @@ export async function runSmoke(win: BrowserWindow): Promise<void> {
     await win.webContents.executeJavaScript('window.__vault.go("library")')
     await win.webContents.executeJavaScript('window.__vault.settle(900)')
     await shot(win, '03-library')
+    const tagManagerButton = await win.webContents.executeJavaScript(
+      'window.__vault.uiTagManagerButton()'
+    )
+    console.log('[tag-manager-button]', JSON.stringify(tagManagerButton))
+    if (!tagManagerButton?.ok) {
+      throw new Error(
+        `Tag manager button is not permanently visible and large enough: ${JSON.stringify(tagManagerButton)}`
+      )
+    }
 
     // Comic detail
     await win.webContents.executeJavaScript('window.__vault.openFirstComic()')

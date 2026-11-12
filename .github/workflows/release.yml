@@ -28,6 +28,7 @@ jobs:
         run: npm ci
 
       - name: Check tag matches package version
+        id: version
         shell: bash
         run: |
           tag="${GITHUB_REF_NAME#v}"
@@ -36,6 +37,7 @@ jobs:
             echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $version"
             exit 1
           fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Typecheck
         run: npm run typecheck
@@ -46,10 +48,25 @@ jobs:
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          name: Vault ${{ github.ref_name }}
+          name: Vault ${{ steps.version.outputs.version }}
           generate_release_notes: true
+          body: |
+            ## Install Vault on Windows
+
+            1. Download **[Vault-Setup-${{ steps.version.outputs.version }}.exe](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Vault-Setup-${{ steps.version.outputs.version }}.exe)** from the **Assets** list below.
+            2. Run the file and follow the installer. You can choose the install folder.
+            3. Launch **Vault** from the Start Menu.
+
+            That is the whole process. `Vault-Portable-${{ steps.version.outputs.version }}.exe` runs without installing, and the `latest.yml` / `*.blockmap` files are auto-update metadata that you do not need.
+
+            > Windows SmartScreen may warn that the app is unrecognized because the builds are not code-signed yet. Choose **More info → Run anyway**.
+
+            ---
+
+            ## What's changed
           files: |
-            release/*.exe
+            release/Vault-Setup-*.exe
+            release/Vault-Portable-*.exe
             release/*.blockmap
             release/latest.yml
           fail_on_unmatched_files: false

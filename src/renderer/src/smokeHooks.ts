@@ -1207,6 +1207,21 @@ export function installSmokeHooks(): void {
     setSearch: (q: string) => {
       useStore.getState().setSearch(q)
     },
+    uiTagManagerButton: () => {
+      const button = document.querySelector<HTMLElement>('[data-action="open-tag-manager"]')
+      if (!button) return { ok: false, stage: 'missing' as const }
+      const rect = button.getBoundingClientRect()
+      const style = getComputedStyle(button)
+      return {
+        ok: rect.width >= 28 && rect.height >= 28 && Number(style.opacity) === 1,
+        stage: 'done' as const,
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+        opacity: style.opacity,
+        background: style.backgroundColor,
+        icon: button.querySelector('svg')?.getAttribute('width')
+      }
+    },
     openTagManager: () => {
       useStore.getState().setTagManagerOpen(true)
     },

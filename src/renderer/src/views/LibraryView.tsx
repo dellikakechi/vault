@@ -354,10 +354,11 @@ export function LibraryView({ onImport }: { onImport: (kind: 'files' | 'folder')
             <div className="sidebar-label">Tags</div>
             <button
               className="side-manage"
+              data-action="open-tag-manager"
               onClick={() => useStore.getState().setTagManagerOpen(true)}
               title="Manage tags"
             >
-              <Icon name="settings" size={12} />
+              <Icon name="settings" size={16} />
             </button>
           </div>
           <div className="sidebar-search">
