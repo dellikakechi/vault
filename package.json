@@ -1,0 +1,93 @@
+{
+  "name": "vault",
+  "productName": "Vault",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A local-first media library for images, comics, GIFs and video.",
+  "author": "Ian",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dellikakechi/vault.git"
+  },
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "build": "electron-vite build",
+    "smoke": "electron-vite build && electron . --smoke",
+    "dist": "electron-vite build && electron-builder --win",
+    "dist:dir": "electron-vite build && electron-builder --win --dir",
+    "release": "electron-vite build && electron-builder --win --publish always"
+  },
+  "build": {
+    "appId": "com.ian.vault",
+    "productName": "Vault",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "dellikakechi",
+        "repo": "vault",
+        "releaseType": "release"
+      }
+    ],
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "node_modules/@jsquash/webp/codec/enc/webp_enc_simd.wasm",
+        "to": "webp_enc_simd.wasm"
+      },
+      {
+        "from": "node_modules/@jsquash/webp/codec/enc/webp_enc.wasm",
+        "to": "webp_enc.wasm"
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "electron": "^45.1.0",
+    "electron-builder": "^26.18.0",
+    "electron-vite": "^6.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "zustand": "^5.0.16"
+  },
+  "dependencies": {
+    "@jsquash/webp": "^1.5.0"
+  }
+}
