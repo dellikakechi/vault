@@ -31,8 +31,8 @@ git push origin v0.2.0
 Watch the run under the repository's **Actions** tab. When it finishes, the
 release appears under **Releases** with:
 
-- `Vault Setup <version>.exe` (NSIS installer)
-- `Vault <version>.exe` (portable)
+- `Vault-Setup-<version>.exe` (NSIS installer)
+- `Vault-Portable-<version>.exe` (portable)
 - `latest.yml` and the installer blockmap (updater metadata)
 
 The filenames come from the app version, so they will carry the new version
