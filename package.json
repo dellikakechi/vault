@@ -17,8 +17,7 @@
     "build": "electron-vite build",
     "smoke": "electron-vite build && electron . --smoke",
     "dist": "electron-vite build && electron-builder --win",
-    "dist:dir": "electron-vite build && electron-builder --win --dir",
-    "release": "electron-vite build && electron-builder --win --publish always"
+    "dist:dir": "electron-vite build && electron-builder --win --dir"
   },
   "build": {
     "appId": "com.ian.vault",
@@ -27,14 +26,6 @@
       "output": "release",
       "buildResources": "build"
     },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "dellikakechi",
-        "repo": "vault",
-        "releaseType": "release"
-      }
-    ],
     "files": [
       "out/**/*",
       "package.json"

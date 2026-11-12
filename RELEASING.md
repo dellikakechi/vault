@@ -6,10 +6,11 @@ as `v0.2.0` runs `.github/workflows/release.yml`, which:
 1. checks the tag matches `version` in `package.json`,
 2. runs `npm run typecheck`,
 3. builds the Windows installer and portable app,
-4. publishes both files to a GitHub Release for that tag.
+4. publishes the artifacts to a GitHub Release for that tag.
 
-The release is published immediately (not left as a draft) because
-`build.publish[0].releaseType` is `"release"`.
+The workflow creates the release itself with `softprops/action-gh-release`, so
+the release page is published immediately with the exe, blockmap, and
+`latest.yml` files attached.
 
 ## Cutting a release
 
@@ -32,21 +33,20 @@ release appears under **Releases** with:
 
 - `Vault Setup <version>.exe` (NSIS installer)
 - `Vault <version>.exe` (portable)
+- `latest.yml` and the installer blockmap (updater metadata)
 
 The filenames come from the app version, so they will carry the new version
 number after a bump.
 
 ## Local publish (optional)
 
-If you ever need to publish from this machine instead, create a GitHub token
-with `repo` scope and run:
+If you ever need to publish from this machine instead, build normally and use
+the GitHub CLI to upload the files:
 
 ```powershell
-$env:GH_TOKEN = "ghp_..."
-npm run release
+npm run dist
+gh release create "v0.2.0" release/*.exe release/*.blockmap release/latest.yml --title "Vault v0.2.0" --generate-notes
 ```
-
-`npm run release` builds and uploads to the same GitHub Release.
 
 ## CI
 
