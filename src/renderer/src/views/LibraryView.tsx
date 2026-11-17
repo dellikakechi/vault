@@ -183,13 +183,16 @@ export function LibraryView({ onImport }: { onImport: (kind: 'files' | 'folder')
       store.select(filtered.slice(a, b + 1).map((i) => i.id), 'add')
     } else if (e.metaKey || e.ctrlKey) {
       store.select([item.id], 'toggle')
+    } else if (store.selected.size === 1 && store.selected.has(item.id)) {
+      // Clicking the already-selected card again clears the selection.
+      store.clearSelection()
     } else {
       store.select([item.id], 'replace')
     }
     lastIndex.current = index
   }
 
-  /** The thumbnail opens the preview; the area below only selects. */
+  /** The thumbnail opens the preview; the area below selects and deselects. */
   function previewCard(e: React.MouseEvent, item: MediaItem): void {
     e.stopPropagation()
     useStore.getState().setDetail(item.id)

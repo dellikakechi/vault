@@ -1060,16 +1060,24 @@ export function installSmokeHooks(): void {
         detail: useStore.getState().detailId,
         selected: [...useStore.getState().selected]
       }
+      body.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      await wait(350)
+      const afterBodyAgain = {
+        detail: useStore.getState().detailId,
+        selected: [...useStore.getState().selected]
+      }
       const result = {
         ok:
           afterThumb.detail === id &&
           afterThumb.selected === 0 &&
           afterBody.detail === null &&
           afterBody.selected.length === 1 &&
-          afterBody.selected[0] === id,
+          afterBody.selected[0] === id &&
+          afterBodyAgain.selected.length === 0,
         id,
         afterThumb,
-        afterBody
+        afterBody,
+        afterBodyAgain
       }
       useStore.getState().clearSelection()
       return result
